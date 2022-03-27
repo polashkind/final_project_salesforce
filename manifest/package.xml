@@ -3,6 +3,7 @@
     <types>
         <members>SubTodo__c</members>
         <members>Todo__c</members>
+        <members>ToDo_Batch_Setting__mdt</members>
         <name>CustomObject</name>
     </types>
     <types>
