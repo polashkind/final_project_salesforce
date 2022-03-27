@@ -14,5 +14,14 @@
     <types>
         <name>RecordType</name>
     </types>
+    <types>
+        <members>ToDo_Batch_Setting.Todo_Batch</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
+        <members>ToDoCleanerBatch</members>
+        <members>ToDoCleanerBatchTest</members>
+        <name>ApexClass</name>
+    </types>
     <version>53.0</version>
 </Package>
