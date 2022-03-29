@@ -1,0 +1,26 @@
+<template>
+    <lightning-layout horizontal-align="space" class="slds-align_absolute-center">
+        <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+            <lightning-card variant="Narrow" title="Todo List">
+                <lightning-button label="Refresh" class="slds-var-p-left_x-small" slot="actions" onclick={refresh}></lightning-button>
+                <lightning-button label="Create" class="slds-var-p-left_x-small" slot="actions" onclick={handleCreateState}></lightning-button>
+            </lightning-card>
+        </lightning-layout-item>
+        <c-todo-search onfind={handleFind}></c-todo-search>
+    </lightning-layout>
+
+    <template if:true={createMode}>
+        <c-todo-create onsuccess={successEventToast} onnocreate={handleCreateState}></c-todo-create>
+    </template>
+
+    <template if:true={mapData}>
+        <lightning-layout multiple-rows>
+            <template for:each={mapData} for:item="keyValue">
+                <lightning-layout-item flexibility="auto" size="3" padding="around-small" key={keyValue.key.Id}>
+                    <c-todo-item todo={keyValue.key} subs={keyValue.value} onsuccess={successEventToast}>
+                    </c-todo-item>
+                </lightning-layout-item>
+            </template>
+        </lightning-layout>
+    </template>
+</template>
