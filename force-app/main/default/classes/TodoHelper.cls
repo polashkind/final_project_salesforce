@@ -4,7 +4,11 @@ public with sharing class TodoHelper {
             // get RecordType by RecordTypeId
             RecordType recordType = [SELECT Id, Name FROM RecordType WHERE Id = :todo.recordTypeId LIMIT 1];
             // get queue by recordTypeName
-            Group queue = [SELECT Id FROM Group WHERE Type = 'Queue' AND Name = :recordType.Name LIMIT 1];
+            String qName = recordType.Name;
+            system.debug('qName' + qName);
+            String assignQ = '%' + qName + '%';
+            system.debug('assignQ' + assignQ);
+            Group queue = [SELECT Id FROM Group WHERE Type = 'Queue' AND Name LIKE :assignQ LIMIT 1];
             // assign queue id to todo ownerId 
             todo.OwnerId = queue.Id;
         }
