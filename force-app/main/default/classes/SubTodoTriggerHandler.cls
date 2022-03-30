@@ -28,7 +28,7 @@ public with sharing class SubTodoTriggerHandler {
             }
         }
         if (!subTodoToUpdate.isEmpty()){
-            TodoTriggerHandler.enableTrigger = false;
+            SubTodoTriggerHandler.enableTrigger = false;
             update subTodoToUpdate;
         }
         sendAfterInsert(subTodoMap.keySet());

@@ -1,6 +1,6 @@
 public with sharing class TodoCallout {
-    private final static String calloutTodo = 'callout:Epam57/services/apexrest/TodoIntegration/';
-    private final static String calloutSubTodo = 'callout:Epam57/services/apexrest/SubTodoIntegration/';
+    private final static String calloutTodo = 'callout:Epam316/services/apexrest/TodoIntegration/';
+    private final static String calloutSubTodo = 'callout:Epam316/services/apexrest/SubTodoIntegration/';
     private final static String header = 'Content-Type';
     private final static String headerType = 'application/json;charset=UTF-8';
 
