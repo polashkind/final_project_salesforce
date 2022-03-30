@@ -8,7 +8,7 @@ public with sharing class TodoTriggerHandler {
     @Future(Callout=true)
     public static void sendAfterInsert(Set<Id> todosIdSet) {
         List<Todo__c> todosToSend = [
-                SELECT ToDo_External_Id__c, Name, Status__c, RecordType.DeveloperName
+                SELECT ToDo_External_Id__c, Name, Status__c, RecordType.DeveloperName, Description__c
                 FROM Todo__c
                 WHERE Id IN :todosIdSet
         ];
@@ -41,7 +41,7 @@ public with sharing class TodoTriggerHandler {
     @Future(Callout=true)
     public static void afterUpdate(Set<Id> todosIdSet) {
         List<Todo__c> todosToSend = [
-                SELECT ToDo_External_Id__c, Name, Status__c, RecordType.DeveloperName
+                SELECT ToDo_External_Id__c, Name, Status__c, RecordType.DeveloperName, Description__c
                 FROM Todo__c
                 WHERE Id IN :todosIdSet
         ];
