@@ -22,7 +22,21 @@
     <types>
         <members>ToDoCleanerBatch</members>
         <members>ToDoCleanerBatchTest</members>
+        <members>TodoTriggerHandler</members>
+        <members>TodoCallout</members>
+        <members>TodoService</members>
+        <members>SubTodoTriggerHandler</members>
+        <members>SubTodoService</members>
         <name>ApexClass</name>
+    </types>
+    <types>
+        <members>TodoTrigger</members>
+        <members>SubTodoTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>Admin</members>
+        <name>Profile</name>
     </types>
     <version>53.0</version>
 </Package>
