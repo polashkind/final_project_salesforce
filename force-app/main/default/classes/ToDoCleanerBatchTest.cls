@@ -19,6 +19,7 @@ public with sharing class ToDoCleanerBatchTest {
                 Name = 'Test todo',
                 Status__c = 'In progress'
         );
+        TodoTriggerHandler.enableTrigger = false;
         insert todo;
         List<ToDo_Batch_Setting__mdt> toDoBatchSettings = [
                 SELECT Id, DeveloperName, Number_of_Days_to_Delete__c

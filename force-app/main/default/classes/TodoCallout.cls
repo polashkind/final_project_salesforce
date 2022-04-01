@@ -51,6 +51,7 @@ public with sharing class TodoCallout {
 
         if (response.getStatusCode() != 200) {
             System.debug('ERROR Send Request - Status Code: ' + response.getStatusCode());
+            throw new StatusCodeException(String.valueOf(response.getStatusCode()));
         }
         return response;
     }

@@ -18,7 +18,7 @@ public with sharing class TodoTriggerHandler {
         TodoCallout.insertTodos(todosToSend);
     }
 
-    public static void afterInsert(Map<Id,Todo__c> todosMap) {
+    public static void afterInsert(Map<Id, Todo__c> todosMap) {
         List<Todo__c> todosList = [
                 SELECT Id, ToDo_External_Id__c
                 FROM Todo__c
@@ -31,7 +31,7 @@ public with sharing class TodoTriggerHandler {
                 todoToUpdate.add(todo);
             }
         }
-        if (!todosList.isEmpty()){
+        if (!todosList.isEmpty()) {
             TodoTriggerHandler.enableTrigger = false;
             update todoToUpdate;
         }
@@ -48,7 +48,7 @@ public with sharing class TodoTriggerHandler {
         TodoCallout.updateTodos(todosToSend);
     }
 
-    public static void afterDelete(Map<Id,Todo__c> todosMap) {
+    public static void afterDelete(Map<Id, Todo__c> todosMap) {
         Set<Id> externalIdSet = new Set<Id>();
         for (Todo__c todo : todosMap.values()) {
             externalIdSet.add(todo.ToDo_External_Id__c);
@@ -61,7 +61,7 @@ public with sharing class TodoTriggerHandler {
         TodoCallout.deleteTodos(externalIdSet);
     }
 
-    public static void afterUndelete(Map<Id,Todo__c> todosMap) {
+    public static void afterUndelete(Map<Id, Todo__c> todosMap) {
         Set<Id> externalIdSet = new Set<Id>();
         for (Todo__c todo : todosMap.values()) {
             externalIdSet.add(todo.ToDo_External_Id__c);

@@ -1,6 +1,6 @@
 public with sharing class SubTodoTriggerHandler {
     public static Boolean enableTrigger = true;
-    
+
     @Future(Callout=true)
     public static void sendAfterInsert(Set<Id> todosIdSet) {
         List<SubTodo__c> subTodosToSend = [
@@ -8,13 +8,13 @@ public with sharing class SubTodoTriggerHandler {
                 FROM SubTodo__c
                 WHERE Id IN :todosIdSet
         ];
-        for (SubTodo__c todo : subTodosToSend) {
-            todo.Id = null;
+        for (SubTodo__c subTodo : subTodosToSend) {
+            subTodo.Id = null;
         }
         TodoCallout.insertSubTodos(subTodosToSend);
     }
 
-    public static void afterInsert(Map<Id,SubTodo__c> subTodoMap) {
+    public static void afterInsert(Map<Id, SubTodo__c> subTodoMap) {
         List<SubTodo__c> subTodosList = [
                 SELECT Id, SubTodo_External_Id__c
                 FROM SubTodo__c
@@ -27,7 +27,7 @@ public with sharing class SubTodoTriggerHandler {
                 subTodoToUpdate.add(subTodo);
             }
         }
-        if (!subTodoToUpdate.isEmpty()){
+        if (!subTodoToUpdate.isEmpty()) {
             SubTodoTriggerHandler.enableTrigger = false;
             update subTodoToUpdate;
         }
@@ -44,7 +44,7 @@ public with sharing class SubTodoTriggerHandler {
         TodoCallout.updateSubTodos(subTodosToSend);
     }
 
-    public static void afterDelete(Map<Id,SubTodo__c> subTodosMap) {
+    public static void afterDelete(Map<Id, SubTodo__c> subTodosMap) {
         Set<Id> externalIdSet = new Set<Id>();
         for (SubTodo__c subTodo : subTodosMap.values()) {
             externalIdSet.add(subTodo.SubTodo_External_Id__c);
@@ -57,7 +57,7 @@ public with sharing class SubTodoTriggerHandler {
         TodoCallout.deleteSubTodos(externalIdSet);
     }
 
-    public static void afterUndelete(Map<Id,SubTodo__c> subTodosMap) {
+    public static void afterUndelete(Map<Id, SubTodo__c> subTodosMap) {
         Set<Id> externalIdSet = new Set<Id>();
         for (SubTodo__c subTodo : subTodosMap.values()) {
             externalIdSet.add(subTodo.SubTodo_External_Id__c);

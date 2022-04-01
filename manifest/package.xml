@@ -27,6 +27,12 @@
         <members>TodoService</members>
         <members>SubTodoTriggerHandler</members>
         <members>SubTodoService</members>
+        <members>TodoTriggerHandlerTest</members>
+        <members>TodoCalloutMock</members>
+        <members>StatusCodeException</members>
+        <members>TodoServiceTest</members>
+        <members>SubTodoTriggerHandlerTest</members>
+        <members>SubTodoServiceTest</members>
         <name>ApexClass</name>
     </types>
     <types>
