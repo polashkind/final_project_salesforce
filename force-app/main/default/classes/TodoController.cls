@@ -12,7 +12,7 @@ public with sharing class TodoController {
                             Description__c
                         FROM Todo__c
                         WITH SECURITY_ENFORCED
-                        ORDER BY Status__c
+                        ORDER BY CreatedDate DESC
                         LIMIT 50
                         ];
 
@@ -33,10 +33,43 @@ public with sharing class TodoController {
                         FROM Todo__c
                         WHERE Name LIKE :key
                         WITH SECURITY_ENFORCED
-                        ORDER BY Status__c
+                        ORDER BY CreatedDate DESC
                         LIMIT 50
                         ];
     
+        return putSubtodos(todos);
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Map<String, List<SubTodo__c>> getFullSearchedMap(String searchKey) {
+        String key = '*' + searchKey + '*';
+
+        List<List<SObject>> soslSearched = [FIND :key IN ALL FIELDS RETURNING Todo__c (Id), Subtodo__c(Master__c)];
+
+        List<Id> todoIds = new List<Id>();
+        for(Todo__c todo : ((List<Todo__c>)soslSearched[0])){
+            todoIds.add(todo.Id);
+        }
+        for(SubTodo__c sub : ((List<SubTodo__c>)soslSearched[1])){
+            todoIds.add(sub.Master__c);
+        }
+
+        Todo__c[] todos = [SELECT
+                            Id,
+                            Name,
+                            RecordTypeId,
+                            Status__c,
+                            RecordType.Name,
+                            CreatedDate,
+                            Description__c
+                        FROM Todo__c
+                        WHERE Id IN : todoIds
+                        WITH SECURITY_ENFORCED
+                        ORDER BY CreatedDate DESC
+                        LIMIT 50
+                        ];
+
+
         return putSubtodos(todos);
     }
 

@@ -1,20 +1,56 @@
 import { LightningElement, track, wire} from 'lwc';
-import getTodoMap from '@salesforce/apex/TodoController.getTodoMap';
-import { loadStyle, loadScript } from 'lightning/platformResourceLoader';
-import noHeader from '@salesforce/resourceUrl/NoHeader';
 import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { loadStyle } from 'lightning/platformResourceLoader';
+import noHeader from '@salesforce/resourceUrl/NoHeader';
+import getTodoMap from '@salesforce/apex/TodoController.getTodoMap';
 
 export default class TodoMain extends LightningElement {
-    @track mapData = [];
+    page = 1; 
+    startingRecord = 1;
+    endingRecord = 0;
+    pageSize = 4;
+    totalRecountCount = 0;
+    totalPage = 0;
+
+    mapData = [];
     wiredResult;
-    
-    @track displayed; //not used (yet)
 
     createMode = false;
+    emptyState = true;
+    error;
 
-    handleCreateState(){
-        this.createMode = !this.createMode;
+    @track currentData = [];
+    @track displayedPage = [];
+    currentCategory = 'All';
+
+    handleCategory(event){
+        this.currentCategory = event.target.value;
+        this.getByCategory();
+        this.pageReset();
+    }
+
+    getByCategory(){
+        this.currentData = [];
+        if (this.currentCategory == 'All') {
+            this.currentData = this.mapData;
+            return;
+        };
+        for (let item of this.mapData) {
+            if (item.key.RecordType.Name == this.currentCategory){
+                this.currentData.push(item);
+            };
+        }
+    }
+
+    get categoryList(){
+        return [
+            {label: 'All', value: 'All'},
+            {label: 'Today', value: 'Today'},
+            {label: 'Tomorrow', value: 'Tomorrow'},
+            {label: 'Later', value: 'Later'},
+            {label: 'Expired', value: 'Expired'},
+        ];
     }
 
     @wire(getTodoMap)
@@ -24,24 +60,45 @@ export default class TodoMain extends LightningElement {
         if (result.data) {
             for (let key in result.data) {
                 let obj = JSON.parse(key);
-
-                let date = obj.CreatedDate
+                let date = obj.CreatedDate;
                 date = date.slice(0,26) + ':' + date.slice(-2); //why
                 obj.CreatedDate = date;
-
                 this.mapData.push({value:result.data[key], key:obj});
             }
+            this.getByCategory();
+
+            this.totalRecountCount = this.currentData.length;
+            this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
+            if (this.totalPage < this.page) {
+                this.displayedPage = this.currentData.slice(0, this.pageSize);
+                this.page = 1;
+            } else {
+                this.displayRecordPerPage(this.page);
+            }
+            this.endingRecord = this.pageSize;
+
+            this.emptyCheck();
+            
         } else if (result.error) {
             this.error = result.error;
         }
     }
 
+    emptyCheck(){
+        if (this.currentData.length == 0){
+            this.emptyState = true;
+        } else {
+            this.emptyState = false;
+        }
+    };
+
     handleFind(event){
         this.mapData = event.detail;
+        this.getByCategory();
+        this.pageReset();
     }
 
     refresh(){
-        console.log('рефрешинг');
         return refreshApex(this.wiredResult);
     }
 
@@ -59,8 +116,65 @@ export default class TodoMain extends LightningElement {
     successEventToast(event){
         this.showSucessToast(event.detail);
     }
+    
+    handleCreateState(){
+        this.createMode = !this.createMode;
+    }
+
+    pageReset(){
+        this.emptyCheck();
+        this.page = 1;
+        this.startingRecord = 1;
+        this.endingRecord = this.pageSize;
+        this.totalRecountCount = this.currentData.length;
+        this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
+        this.displayRecordPerPage(this.page);   
+    }
+
+    displayRecordPerPage(page){
+        this.startingRecord = ((page -1) * this.pageSize) ;
+        this.endingRecord = (this.pageSize * page);
+        this.endingRecord = (this.endingRecord > this.totalRecountCount) 
+                            ? this.totalRecountCount : this.endingRecord; 
+
+        this.displayedPage = this.currentData.slice(this.startingRecord, this.endingRecord);
+        this.startingRecord = this.startingRecord + 1;
+    }
+
+    get pageInfo() {
+        return 'Page ' + this.page + '/' + this.totalPage;
+    };
+
+    handlePreviousPage() {
+        if (this.page > 1) {
+            this.page = this.page - 1;
+            this.displayRecordPerPage(this.page);
+        }
+    }
+
+    handleNextPage() {
+        if((this.page<this.totalPage) && this.page !== this.totalPage){
+            this.page = this.page + 1;
+            this.displayRecordPerPage(this.page);            
+        }             
+    }
+
+    handleFirstPage() {
+        this.page = 1;
+        this.displayRecordPerPage(this.page);            
+    }
+
+    handleLastPage() {
+        this.page = this.totalPage;
+        this.displayRecordPerPage(this.page);            
+    }
+
+    handleClear() {
+        this.currentCategory = 'All';
+        this.template.querySelector('c-todo-search').handleReset();
+    }
 
     connectedCallback() {
-        loadStyle(this, noHeader)
+        loadStyle(this, noHeader);
     }
 }
