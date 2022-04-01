@@ -11,7 +11,7 @@ public with sharing class TestDataFactory {
 
         public List<Todo__c> createTodoList(Integer count, String Name, Id recordTypeId, String status) {
             List<Todo__c> todos = new List<Todo__c>();
-            for(Integer i = 0; i <= count; i++) {
+            for(Integer i = 0; i < count; i++) {
                 todos.add(createTodo(name, recordTypeId, status));
             }
             insert todos;
