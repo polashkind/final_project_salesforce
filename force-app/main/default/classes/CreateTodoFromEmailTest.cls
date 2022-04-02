@@ -4,6 +4,7 @@ public with sharing class CreateTodoFromEmailTest {
     @isTest
     static void handleInboundEmailTest() {
         
+        TodoTriggerHandler.enableTrigger = false;
         Messaging.InboundEmail email = new Messaging.InboundEmail() ;
         Messaging.InboundEnvelope env = new Messaging.InboundEnvelope();
         
