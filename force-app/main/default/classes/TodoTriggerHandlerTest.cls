@@ -1,12 +1,17 @@
 @IsTest
 public with sharing class TodoTriggerHandlerTest {
-    @IsTest
-    public static void afterInsertTest() {
+
+    public static Todo__c prepareToDo(){
         Test.setMock(HttpCalloutMock.class, new TodoCalloutMock());
         Group queue = new Group(Name = 'Later', Type = 'Queue');
         insert queue;
         Id testRecordTypeId = Schema.SObjectType.Todo__c.getRecordTypeInfosByName().get('Later').getRecordTypeId();
-        Todo__c todo = TestDataFactory.TODO.createTodo('Test todo', testRecordTypeId, 'In progress');
+        return TestDataFactory.TODO.createTodo('Test todo', testRecordTypeId, 'In progress');
+    }
+
+    @IsTest
+    public static void afterInsertTest() {
+        Todo__c todo = prepareToDo();
         Boolean noError = true;
         Test.startTest();
         try {
@@ -21,11 +26,7 @@ public with sharing class TodoTriggerHandlerTest {
 
     @IsTest
     public static void afterUpdateTest() {
-        Test.setMock(HttpCalloutMock.class, new TodoCalloutMock());
-        Group queue = new Group(Name = 'Later', Type = 'Queue');
-        insert queue;
-        Id testRecordTypeId = Schema.SObjectType.Todo__c.getRecordTypeInfosByName().get('Later').getRecordTypeId();
-        Todo__c todo = TestDataFactory.TODO.createTodo('Test todo', testRecordTypeId, 'In progress');
+        Todo__c todo = prepareToDo();
         Boolean noError = true;
         TodoTriggerHandler.enableTrigger = false;
         insert todo;
@@ -44,11 +45,7 @@ public with sharing class TodoTriggerHandlerTest {
 
     @IsTest
     public static void afterDeleteTest() {
-        Test.setMock(HttpCalloutMock.class, new TodoCalloutMock());
-        Group queue = new Group(Name = 'Later', Type = 'Queue');
-        insert queue;
-        Id testRecordTypeId = Schema.SObjectType.Todo__c.getRecordTypeInfosByName().get('Later').getRecordTypeId();
-        Todo__c todo = TestDataFactory.TODO.createTodo('Test todo', testRecordTypeId, 'In progress');
+        Todo__c todo = prepareToDo();
         Boolean noError = true;
         TodoTriggerHandler.enableTrigger = false;
         insert todo;
@@ -66,11 +63,7 @@ public with sharing class TodoTriggerHandlerTest {
 
     @IsTest
     public static void afterUndeleteTest() {
-        Test.setMock(HttpCalloutMock.class, new TodoCalloutMock());
-        Group queue = new Group(Name = 'Later', Type = 'Queue');
-        insert queue;
-        Id testRecordTypeId = Schema.SObjectType.Todo__c.getRecordTypeInfosByName().get('Later').getRecordTypeId();
-        Todo__c todo = TestDataFactory.TODO.createTodo('Test todo', testRecordTypeId, 'In progress');
+        Todo__c todo = prepareToDo();
         Boolean noError = true;
         TodoTriggerHandler.enableTrigger = false;
         insert todo;

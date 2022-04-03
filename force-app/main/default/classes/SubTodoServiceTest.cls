@@ -46,7 +46,7 @@ public with sharing class SubTodoServiceTest {
         SubTodoTriggerHandler.enableTrigger = false;
         update subTodosToSend;
         RestRequest request = new RestRequest();
-        request.httpMethod = 'POST';
+        request.httpMethod = 'PATCH';
         request.requestBody = Blob.valueOf(JSON.serialize(subTodosToSend));
         RestContext.request = request;
         Test.startTest();
@@ -68,7 +68,7 @@ public with sharing class SubTodoServiceTest {
         SubTodoTriggerHandler.enableTrigger = false;
         update subTodosByIdsMap.values();
         RestRequest request = new RestRequest();
-        request.httpMethod = 'POST';
+        request.httpMethod = 'DELETE';
         request.requestBody = Blob.valueOf(JSON.serialize(subTodosByIdsMap.keySet()));
         RestContext.request = request;
         Test.startTest();
@@ -91,7 +91,7 @@ public with sharing class SubTodoServiceTest {
         update subTodosByIdsMap.values();
         delete subTodosByIdsMap.values();
         RestRequest request = new RestRequest();
-        request.httpMethod = 'POST';
+        request.httpMethod = 'PUT';
         request.requestBody = Blob.valueOf(JSON.serialize(subTodosByIdsMap.keySet()));
         RestContext.request = request;
         Test.startTest();

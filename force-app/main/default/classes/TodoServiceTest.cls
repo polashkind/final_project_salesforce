@@ -39,7 +39,7 @@ public with sharing class TodoServiceTest {
         TodoTriggerHandler.enableTrigger = false;
         update todosToSend;
         RestRequest request = new RestRequest();
-        request.httpMethod = 'POST';
+        request.httpMethod = 'PATCH';
         request.requestBody = Blob.valueOf(JSON.serialize(todosToSend));
         RestContext.request = request;
         Test.startTest();
@@ -61,7 +61,7 @@ public with sharing class TodoServiceTest {
         TodoTriggerHandler.enableTrigger = false;
         update todosByIdsMap.values();
         RestRequest request = new RestRequest();
-        request.httpMethod = 'POST';
+        request.httpMethod = 'DELETE';
         request.requestBody = Blob.valueOf(JSON.serialize(todosByIdsMap.keySet()));
         RestContext.request = request;
         Test.startTest();
@@ -84,7 +84,7 @@ public with sharing class TodoServiceTest {
         update todosByIdsMap.values();
         delete todosByIdsMap.values();
         RestRequest request = new RestRequest();
-        request.httpMethod = 'POST';
+        request.httpMethod = 'PUT';
         request.requestBody = Blob.valueOf(JSON.serialize(todosByIdsMap.keySet()));
         RestContext.request = request;
         Test.startTest();
