@@ -7,6 +7,12 @@
                     <ul class="slds-list_horizontal">
                         <li class="slds-var-p-left_x-small slds-m-top_x-small">
                             (found {totalRecountCount} records)</li>
+                        <li><lightning-button-icon
+                            class="slds-var-m-left_x-small"
+                            icon-name="utility:sync"
+                            onclick={refresh}
+                            alternative-text="Force refresh"
+                        ></lightning-button-icon></li>
                         <li><lightning-combobox name="recordType" variant="label-hidden"
                                 value={currentCategory} class="slds-var-p-left_x-small"
                                 options={categoryList} onchange={handleCategory}>

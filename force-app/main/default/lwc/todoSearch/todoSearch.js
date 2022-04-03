@@ -9,6 +9,11 @@ export default class TodoSearch extends LightningElement {
     allFields = false;
 
     @api
+    currentQuery() {
+        return this.query;
+    }
+
+    @api
     handleReset() {
         this.query = '';
         this.handleSearch();
@@ -28,6 +33,7 @@ export default class TodoSearch extends LightningElement {
         }
     }
 
+    @api
     handleSearch() {
         const searchKey = this.query;
         if (this.allFields == false || this.query == '') {
@@ -43,7 +49,6 @@ export default class TodoSearch extends LightningElement {
 
                         mapData.push({value:result[key], key:obj});
                     }
-
                     const findEvent = new CustomEvent('find', {
                         detail: mapData
                     });

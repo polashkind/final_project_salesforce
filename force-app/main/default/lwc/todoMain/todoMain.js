@@ -24,35 +24,6 @@ export default class TodoMain extends LightningElement {
     @track displayedPage = [];
     currentCategory = 'All';
 
-    handleCategory(event){
-        this.currentCategory = event.target.value;
-        this.getByCategory();
-        this.pageReset();
-    }
-
-    getByCategory(){
-        this.currentData = [];
-        if (this.currentCategory == 'All') {
-            this.currentData = this.mapData;
-            return;
-        };
-        for (let item of this.mapData) {
-            if (item.key.RecordType.Name == this.currentCategory){
-                this.currentData.push(item);
-            };
-        }
-    }
-
-    get categoryList(){
-        return [
-            {label: 'All', value: 'All'},
-            {label: 'Today', value: 'Today'},
-            {label: 'Tomorrow', value: 'Tomorrow'},
-            {label: 'Later', value: 'Later'},
-            {label: 'Expired', value: 'Expired'},
-        ];
-    }
-
     @wire(getTodoMap)
     wiredMap(result) {
         this.wiredResult = result;
@@ -70,17 +41,27 @@ export default class TodoMain extends LightningElement {
             this.totalRecountCount = this.currentData.length;
             this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
             if (this.totalPage < this.page) {
-                this.displayedPage = this.currentData.slice(0, this.pageSize);
-                this.page = 1;
-            } else {
-                this.displayRecordPerPage(this.page);
+                this.page = this.totalPage;
             }
-            this.endingRecord = this.pageSize;
+            this.displayRecordPerPage(this.page);
 
             this.emptyCheck();
             
         } else if (result.error) {
             this.error = result.error;
+        }
+    }
+
+    getByCategory(){
+        this.currentData = [];
+        if (this.currentCategory == 'All') {
+            this.currentData = this.mapData;
+            return;
+        };
+        for (let item of this.mapData) {
+            if (item.key.RecordType.Name == this.currentCategory){
+                this.currentData.push(item);
+            };
         }
     }
 
@@ -92,14 +73,27 @@ export default class TodoMain extends LightningElement {
         }
     };
 
+    refresh(){
+        if (this.template.querySelector('c-todo-search').currentQuery() != '') {
+            return this.template.querySelector('c-todo-search').handleSearch();
+        };
+        refreshApex(this.wiredResult);
+    }
+
+    handleCategory(event){
+        this.currentCategory = event.target.value;
+        this.getByCategory();
+        this.pageReset();
+    }
+
     handleFind(event){
         this.mapData = event.detail;
         this.getByCategory();
         this.pageReset();
     }
 
-    refresh(){
-        return refreshApex(this.wiredResult);
+    handleCreateState(){
+        this.createMode = !this.createMode;
     }
 
     showSucessToast(message){
@@ -116,19 +110,19 @@ export default class TodoMain extends LightningElement {
     successEventToast(event){
         this.showSucessToast(event.detail);
     }
-    
-    handleCreateState(){
-        this.createMode = !this.createMode;
-    }
 
-    pageReset(){
-        this.emptyCheck();
-        this.page = 1;
-        this.startingRecord = 1;
-        this.endingRecord = this.pageSize;
-        this.totalRecountCount = this.currentData.length;
-        this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
-        this.displayRecordPerPage(this.page);   
+    get pageInfo() {
+        return 'Page ' + this.page + '/' + this.totalPage;
+    };
+    
+    get categoryList(){
+        return [
+            {label: 'All', value: 'All'},
+            {label: 'Today', value: 'Today'},
+            {label: 'Tomorrow', value: 'Tomorrow'},
+            {label: 'Later', value: 'Later'},
+            {label: 'Expired', value: 'Expired'},
+        ];
     }
 
     displayRecordPerPage(page){
@@ -141,9 +135,15 @@ export default class TodoMain extends LightningElement {
         this.startingRecord = this.startingRecord + 1;
     }
 
-    get pageInfo() {
-        return 'Page ' + this.page + '/' + this.totalPage;
-    };
+    pageReset(){
+        this.emptyCheck();
+        this.page = 1;
+        this.startingRecord = 1;
+        this.endingRecord = this.pageSize;
+        this.totalRecountCount = this.currentData.length;
+        this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
+        this.displayRecordPerPage(this.page);   
+    }
 
     handlePreviousPage() {
         if (this.page > 1) {

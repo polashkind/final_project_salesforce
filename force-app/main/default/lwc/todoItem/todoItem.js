@@ -18,10 +18,6 @@ export default class TodoItem extends LightningElement {
     @api todo;
     @api subs;
     edit = false;
-
-    handleEdit() {
-        this.edit = !this.edit;
-    }
     
     @wire(getObjectInfo, { objectApiName: TODO_OBJECT}) objectInfo;
 
@@ -54,6 +50,17 @@ export default class TodoItem extends LightningElement {
             { label: 'In progress', value: 'In progress' },
             { label: 'Done', value: 'Done' },
         ];
+    }
+    
+    handleEdit() {
+        this.edit = !this.edit;
+    }
+    
+    handleSubToast(event) {
+        const subEvent = new CustomEvent('success', {
+            detail: event.detail
+        });
+        this.dispatchEvent(subEvent);
     }
 
     updateTodo(event) {
@@ -97,13 +104,6 @@ export default class TodoItem extends LightningElement {
                 })
             );
         }
-    }
-
-    handleSubToast(event) {
-        const subEvent = new CustomEvent('success', {
-            detail: event.detail
-        });
-        this.dispatchEvent(subEvent);
     }
 
     tryDelete(event) {

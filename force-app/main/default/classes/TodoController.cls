@@ -19,7 +19,7 @@ public with sharing class TodoController {
         return putSubtodos(todos);
     }
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(cacheable=false)
     public static Map<String, List<SubTodo__c>> getSearchedMap(String searchKey) {
         String key = '%' + searchKey + '%';
         Todo__c[] todos = [SELECT
@@ -40,11 +40,10 @@ public with sharing class TodoController {
         return putSubtodos(todos);
     }
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(cacheable=false)
     public static Map<String, List<SubTodo__c>> getFullSearchedMap(String searchKey) {
-        String key = '*' + searchKey + '*';
 
-        List<List<SObject>> soslSearched = [FIND :key IN ALL FIELDS RETURNING Todo__c (Id), Subtodo__c(Master__c)];
+        List<List<SObject>> soslSearched = [FIND :searchKey IN ALL FIELDS RETURNING Todo__c (Id), Subtodo__c(Master__c)];
 
         List<Id> todoIds = new List<Id>();
         for(Todo__c todo : ((List<Todo__c>)soslSearched[0])){
