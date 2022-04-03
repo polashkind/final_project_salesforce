@@ -33,6 +33,12 @@
         <members>TodoServiceTest</members>
         <members>SubTodoTriggerHandlerTest</members>
         <members>SubTodoServiceTest</members>
+        <members>CreateTodoFromEmail</members>
+        <members>CreateTodoFromEmailTest</members>
+        <members>TestDataFactory</members>
+        <members>TodoController</members>
+        <members>TodoHelper</members>
+        <members>TodoHelperTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -43,6 +49,78 @@
     <types>
         <members>Admin</members>
         <name>Profile</name>
+    </types>
+    <types>
+        <members>SalesforceTodos</members>
+        <name>AuthProvider</name>
+    </types>
+    <types>
+        <members>TodoIntegrationApp</members>
+        <name>ConnectedApp</name>
+    </types>
+    <types>
+        <members>Todo</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>SubTodo__c</members>
+        <members>Todo_App</members>
+        <members>Todo__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>unfiled$public/ToDo_Status_Changed_Template</members>
+        <name>EmailTemplate</name>
+    </types>
+    <types>
+        <members>Todo_App</members>
+        <members>Todo_UtilityBar</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>ToDo_status_update</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>ToDo_status_update</members>
+        <name>FlowDefinition</name>
+    </types>
+    <types>
+        <members>SubTodo__c-SubTodo Layout</members>
+        <members>Todo__c-Todo Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Epam316</members>
+        <name>NamedCredential</name>
+    </types>
+    <types>
+        <members>LaterGroup</members>
+        <members>TodayGroup</members>
+        <members>TomorrowGroup</members>
+        <name>Queue</name>
+    </types>
+    <types>
+        <members>Epam316_Site_Settings</members>
+        <name>RemoteSiteSetting</name>
+    </types>
+    <types>
+        <members>Todo__c.ToDo_Notification</members>
+        <name>WorkflowAlert</name>
+    </types>
+    <types>
+        <members>ldsUtils</members>
+        <members>todoCreate</members>
+        <members>todoItem</members>
+        <members>todoMain</members>
+        <members>todoSearch</members>
+        <members>todoSubCreate</members>
+        <members>todoSubItem</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>noHeader</members>
+        <name>StaticResource</name>
     </types>
     <version>53.0</version>
 </Package>
