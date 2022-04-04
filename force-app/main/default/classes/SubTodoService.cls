@@ -12,7 +12,7 @@ global class SubTodoService {
     }
 
     @HttpDelete
-    global static void deleteSubTodo() {
+    global static String deleteSubTodo() {
         RestRequest request = RestContext.request;
         Set<Id> subTodosExternalIdSet = (Set<Id>) JSON.deserialize(request.requestBody.toString(), Set<Id>.class);
         List<SubTodo__c> subTodos = [
@@ -24,6 +24,7 @@ global class SubTodoService {
             SubTodoTriggerHandler.enableTrigger = false;
             delete subTodos;
         }
+        return JSON.serialize(subTodos);
     }
 
     @HttpPut
