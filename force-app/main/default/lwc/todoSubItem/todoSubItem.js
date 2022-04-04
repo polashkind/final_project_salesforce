@@ -18,6 +18,11 @@ export default class TodoSubItem extends LightningElement {
         this.done = this.sub.Done__c;
     }
 
+    
+    handleEdit() {
+        this.editMode = !this.editMode;
+    }
+
     handleDelete(event){
         const recordId = event.target.dataset.recordid;
         deleteRecord(recordId)
@@ -39,6 +44,11 @@ export default class TodoSubItem extends LightningElement {
     }
 
     handleSave(event) {
+        let name = this.template.querySelector("[data-field='Name']").value;
+        if (name.trim().length === 0) {
+            this.template.querySelector("[data-field='Name']").value = '';
+        };
+
         const allValid = [...this.template.querySelectorAll('lightning-input')]
             .reduce((validSoFar, inputFields) => {
                 inputFields.reportValidity();
@@ -82,9 +92,4 @@ export default class TodoSubItem extends LightningElement {
             );
         }
     }
-
-    handleEdit() {
-        this.editMode = !this.editMode;
-    }
-
 }

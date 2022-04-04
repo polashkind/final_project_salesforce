@@ -8,13 +8,15 @@ import TODO_OBJECT from '@salesforce/schema/Todo__c';
 
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { NavigationMixin } from 'lightning/navigation';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import { reduceErrors } from 'c/ldsUtils';
 import { updateRecord } from 'lightning/uiRecordApi';
 const master = 'Master';
 const expired = 'Expired';
 
-export default class TodoItem extends LightningElement {
+export default class TodoItem extends NavigationMixin(LightningElement) {
+
     @api todo;
     @api subs;
     edit = false;
@@ -55,6 +57,17 @@ export default class TodoItem extends LightningElement {
     handleEdit() {
         this.edit = !this.edit;
     }
+
+    navigateToRecord() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: this.todo.Id,
+                objectApiName: 'Todo',
+                actionName: 'view'
+            }
+        });
+    }
     
     handleSubToast(event) {
         const subEvent = new CustomEvent('success', {
@@ -64,6 +77,11 @@ export default class TodoItem extends LightningElement {
     }
 
     updateTodo(event) {
+        let name = this.template.querySelector("[data-field='Name']").value;
+        if (name.trim().length === 0) {
+            this.template.querySelector("[data-field='Name']").value = '';
+        };
+
         const allValid = [...this.template.querySelectorAll('lightning-input')]
             .reduce((validSoFar, inputFields) => {
                 inputFields.reportValidity();

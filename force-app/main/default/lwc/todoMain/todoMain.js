@@ -6,7 +6,8 @@ import noHeader from '@salesforce/resourceUrl/NoHeader';
 import getTodoMap from '@salesforce/apex/TodoController.getTodoMap';
 
 export default class TodoMain extends LightningElement {
-    page = 1; 
+
+    page = 1;
     startingRecord = 1;
     endingRecord = 0;
     pageSize = 4;
@@ -16,6 +17,7 @@ export default class TodoMain extends LightningElement {
     mapData = [];
     wiredResult;
 
+    widthOutput = window.innerWidth;
     createMode = false;
     emptyState = true;
     error;
@@ -125,6 +127,15 @@ export default class TodoMain extends LightningElement {
         ];
     }
 
+    get cardSize() {
+        if(this.widthOutput < 790){
+            return 6;
+        } else if (this.widthOutput < 1000) {
+            return 4;
+        }
+        return 3;
+    }
+
     displayRecordPerPage(page){
         this.startingRecord = ((page -1) * this.pageSize) ;
         this.endingRecord = (this.pageSize * page);
@@ -174,7 +185,12 @@ export default class TodoMain extends LightningElement {
         this.template.querySelector('c-todo-search').handleReset();
     }
 
+    resizeListener = () => {
+        this.widthOutput = window.innerWidth;
+    };
+
     connectedCallback() {
+        window.addEventListener('resize', this.resizeListener);
         loadStyle(this, noHeader);
     }
 }

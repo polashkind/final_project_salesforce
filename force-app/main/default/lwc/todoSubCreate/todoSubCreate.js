@@ -14,6 +14,11 @@ export default class TodoSubCreate extends LightningElement {
     }
 
     handleSave() {
+        let name = this.template.querySelector("[data-field='Name']").value;
+        if (name.trim().length === 0) {
+            this.template.querySelector("[data-field='Name']").value = '';
+        };
+        
         const allValid = [...this.template.querySelectorAll('lightning-input')]
             .reduce((validSoFar, inputFields) => {
                 inputFields.reportValidity();

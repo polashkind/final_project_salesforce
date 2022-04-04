@@ -9,7 +9,8 @@ public with sharing class TodoController {
                             Status__c,
                             RecordType.Name,
                             CreatedDate,
-                            Description__c
+                            Description__c,
+                            Owner.Name
                         FROM Todo__c
                         WITH SECURITY_ENFORCED
                         ORDER BY CreatedDate DESC
@@ -29,7 +30,8 @@ public with sharing class TodoController {
                             Status__c,
                             RecordType.Name,
                             CreatedDate,
-                            Description__c
+                            Description__c,
+                            Owner.Name
                         FROM Todo__c
                         WHERE Name LIKE :key
                         WITH SECURITY_ENFORCED
@@ -60,7 +62,8 @@ public with sharing class TodoController {
                             Status__c,
                             RecordType.Name,
                             CreatedDate,
-                            Description__c
+                            Description__c,
+                            Owner.Name
                         FROM Todo__c
                         WHERE Id IN : todoIds
                         WITH SECURITY_ENFORCED

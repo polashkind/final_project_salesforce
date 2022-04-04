@@ -3,7 +3,7 @@
     <lightning-card>
         <div slot="title">
             <lightning-icon icon-name={statusIcon} size="x-small"></lightning-icon>
-            <span class="slds-var-m-left_x-small"><b>{todo.Name}</b></span>
+            <a class="slds-var-m-left_x-small" onclick={navigateToRecord} title={todo.Name}>{todo.Name}</a>
         </div>
 
         <lightning-button-icon-stateful icon-name="utility:edit" selected={edit} slot="actions" onclick={handleEdit}
@@ -13,9 +13,10 @@
 
         <template if:false={edit}>
             <div class="slds-var-p-horizontal_small" align="center">
-                <span class="slds-text-body_small">Created: <lightning-formatted-date-time value={todo.CreatedDate}
+                <span class="slds-text-body_small">Owner: {todo.Owner.Name}</span>
+                <p class="slds-text-body_small">Created: <lightning-formatted-date-time value={todo.CreatedDate}
                         year="2-digit" month="short" day="numeric" hour="2-digit" minute="2-digit">
-                    </lightning-formatted-date-time></span>
+                    </lightning-formatted-date-time></p>
                 <div>Due time: <span class={todo.RecordType.Name}>{todo.RecordType.Name} </span>
                     ({todo.Status__c})</div>
 
