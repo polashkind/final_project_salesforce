@@ -9,7 +9,7 @@ public with sharing class TodoHelperTest {
         TodoTriggerHandler.enableTrigger = false;
         Id testRecordTypeId = Schema.SObjectType.Todo__c.getRecordTypeInfosByName().get('Later').getRecordTypeId();
         List<Todo__c> todos = TestDataFactory.TODO.createTodoList(5, 'Test todo', testRecordTypeId, 'In progress');
-        Group queue = TestDataFactory.QUEUE.createQueue('Later', 'Queue');
+        Group queue = TestDataFactory.QUEUE.createQueue('Later Group', 'Queue');
         
         Test.startTest();
         
