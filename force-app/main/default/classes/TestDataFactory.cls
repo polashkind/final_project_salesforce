@@ -19,14 +19,6 @@ public with sharing class TestDataFactory {
         }
     }
 
-    /*public class TestRecordTypeFactory{
-        public RecordType createRecordType(String name, String SObjectType) {
-            RecordType recordType = new RecordType(Name = name, SObjectType = SObjectType);
-			insert recordType;
-			return recordType;
-        }
-    }*/
-
     public class TestQueueFactory{
         public Group createQueue(String name, String type) {
             Group queue = new Group(Name = name, Type = type);
